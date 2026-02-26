@@ -411,7 +411,8 @@
         <h2>PCB Workspace Access</h2>
         <p class="sub">Access your SERC Account here!</p>
 
-        <a href="https://pcbworkspace-serc.github.io/login" class="btn" target="_blank" rel="noopener">
+        <!-- UPDATED LINK: points to your org root site -->
+        <a href="https://pcbworkspace-serc.github.io/" class="btn" target="_blank" rel="noopener">
           Open PCB Workspace
         </a>
 
@@ -537,9 +538,7 @@
           const r = data[i];
           const g = data[i + 1];
           const b = data[i + 2];
-          if (r > 235 && g > 235 && b > 235) {
-            data[i + 3] = 0;
-          }
+          if (r > 235 && g > 235 && b > 235) data[i + 3] = 0;
         }
 
         ctx.putImageData(imageData, 0, 0);
@@ -549,9 +548,9 @@
 
     function initRobotPngTransparency() {
       document.querySelectorAll('img[data-robot-png="true"]').forEach(img => {
-        const applyTransparency = () => removeWhiteBackground(img);
-        if (img.complete) applyTransparency();
-        else img.addEventListener('load', applyTransparency, { once: true });
+        const apply = () => removeWhiteBackground(img);
+        if (img.complete) apply();
+        else img.addEventListener('load', apply, { once: true });
       });
     }
     initRobotPngTransparency();
