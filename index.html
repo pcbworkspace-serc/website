@@ -1,531 +1,596 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SERC – PCB Workspace</title>
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --navy: #0d2d6e;
-  --blue: #1a4dbf;
-  --mid-blue: #1e5cd4;
-  --light-blue: #dce9f8;
-  --lighter-blue: #eaf3fc;
-  --card-bg: #d6e8f7;
-  --btn-bg: #0d2d6e;
-  --white: #ffffff;
-  --text-dark: #0d2d6e;
-  --text-sub: #2563a8;
-}
-body {
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  background: var(--navy);
-  color: var(--text-dark);
-  min-height: 100vh;
-}
-/* ── NAV ── */
-nav {
-  background: var(--white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-  padding: 14px 24px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 8px rgba(0,0,0,.08);
-  flex-wrap: wrap;
-}
-nav a {
-  text-decoration: none;
-  color: #1a1a2e;
-  font-weight: 600;
-  font-size: 0.88rem;
-  padding: 4px 2px;
-  border-bottom: 2px solid transparent;
-  transition: color .2s, border-color .2s;
-  white-space: nowrap;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SERC – PCB Workspace</title>
 
-/* Pages */
-.page { display: none; }
-.page.active { display: block; }
-/* ── HERO ── */
-.hero {
-  background: linear-gradient(160deg, #2255c4 0%, #0d2d6e 60%);
-  padding: 60px 20px 40px;
-  text-align: center;
-}
-.hero-logo-box {
-  background: transparent;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border-radius: 12px;
-  margin-bottom: 16px;
-}
-/* Home SERC logo (bigger) */
-.hero-logo-box img {
-  height: 140px;
-  width: auto;
-  display: block;
-}
-@media (max-width: 480px){
-  .hero-logo-box img { height: 110px; }
-}
-.hero h1 {
-  color: var(--white);
-  font-size: 1.9rem;
-  font-weight: 800;
-  margin-bottom: 6px;
-}
-.hero p {
-  color: #b8d0f0;
-  font-size: 1rem;
-  margin-bottom: 36px;
-}
-/* ── SECTIONS / CARDS ── */
-.section-wrap {
-  background: linear-gradient(160deg, #1746a0 0%, #0d2466 100%);
-  min-height: calc(100vh - 57px);
-  padding: 40px 20px;
-}
-.card {
-  background: var(--light-blue);
-  border-radius: 16px;
-  padding: 30px 28px;
-  max-width: 780px;
-  margin: 0 auto 32px;
-}
-.card h2 {
-  color: var(--text-dark);
-  font-size: 1.55rem;
-  font-weight: 900;
-  margin-bottom: 8px;
-}
-.card .sub {
-  color: var(--text-sub);
-  font-size: 1rem;
-  margin-bottom: 20px;
-}
-/* MiniMEE assistant row */
-.chat-row {
-  background: #aecdff;
-  border-radius: 10px;
-  padding: 18px 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  border: 1px solid rgba(13,45,110,.35);
-  max-width: 760px;
-}
-/* Home robot avatar (bigger) */
-.chat-avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 3px solid var(--white);
-  background: var(--white);
-  overflow: hidden;
-  flex-shrink: 0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-@media (max-width: 480px){
-  .chat-avatar { width: 96px; height: 96px; }
-}
-.chat-avatar img { width: 100%; height: 100%; object-fit: contain; }
-.chat-name { font-weight: 800; color: var(--text-sub); font-size: 1.05rem; }
-/* Option rows (blue boxes) */
-.option-row {
-  background: #aecdff;
-  border-radius: 10px;
-  padding: 22px 22px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 14px;
-  border: 1px solid rgba(13,45,110,.35);
-}
-.option-icon {
-  width: 52px;
-  height: 52px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-}
-.option-icon svg { width: 40px; height: 40px; color: var(--navy); }
-.option-title { font-weight: 900; color: var(--text-dark); font-size: 1.05rem; }
-.option-sub { font-size: 0.95rem; color: var(--text-sub); margin-top: 6px; }
-/* Buttons (big navy pills) */
-.btn {
-  display: block;
-  width: 100%;
-  background: var(--btn-bg);
-  color: var(--white);
-  font-weight: 800;
-  font-size: 1rem;
-  padding: 18px 16px;
-  border: none;
-  border-radius: 999px;
-  cursor: pointer;
-  text-align: center;
-  margin: 14px 0 22px;
-  transition: background .2s, transform .1s;
-  text-decoration: none;
-}
-.btn:hover { background: #1a3a8a; transform: translateY(-1px); }
-.btn.secondary { background: #1a4dbf; }
-.btn.secondary:hover { background: #1842a1; }
-/* Centered images */
-.center-img { display:flex; justify-content:center; margin-top: 14px; }
-.center-img img { max-width: 280px; width: 100%; height: auto; border-radius: 8px; }
-/* Workspace video */
-.video-wrap {
-  border-radius: 10px;
-  overflow: hidden;
-  border: 2px solid #aac4e8;
-  background: #000;
-  margin-top: 16px;
-}
-.video-wrap video { width: 100%; display:block; }
-/* About text */
-.about-text { color: var(--text-dark); line-height: 1.7; font-size: 1rem; }
-.about-text h3 { font-size: 1.1rem; font-weight: 900; margin: 16px 0 6px; color: var(--navy); }
-</style>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0d2d6e;
+      --blue: #1a4dbf;
+      --mid-blue: #1e5cd4;
+      --light-blue: #dce9f8;
+      --lighter-blue: #eaf3fc;
+      --card-bg: #d6e8f7;
+      --btn-bg: #0d2d6e;
+      --white: #ffffff;
+      --text-dark: #0d2d6e;
+      --text-sub: #2563a8;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--navy);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      padding: 14px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #1a1a2e;
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 4px 2px;
+      border-bottom: 2px solid transparent;
+      transition: color .2s, border-color .2s;
+      white-space: nowrap;
+    }
+    nav a:hover, nav a.active { color: #1a7be0; border-bottom-color: #1a7be0; }
+
+    /* Top-right robot circle (bigger) */
+    .nav-logo {
+      margin-left: auto;
+      width: 128px;      /* was 34px */
+      height: 128px;     /* was 34px */
+      cursor: pointer;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #e5e7eb;
+      padding: 4px;
+      object-fit: contain;
+    }
+    @media (max-width: 480px){
+      .nav-logo { width: 128px; height: 128px; padding: 3px; }
+    }
+
+    /* Pages */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(160deg, #2255c4 0%, #0d2d6e 60%);
+      padding: 60px 20px 40px;
+      text-align: center;
+    }
+    .hero-logo-box {
+      background: transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    /* Home SERC logo (bigger) */
+    .hero-logo-box img {
+      height: 140px;    /* was 80px */
+      width: auto;
+      display: block;
+    }
+    @media (max-width: 480px){
+      .hero-logo-box img { height: 110px; }
+    }
+
+    .hero h1 {
+      color: var(--white);
+      font-size: 1.9rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .hero p {
+      color: #b8d0f0;
+      font-size: 1rem;
+      margin-bottom: 36px;
+    }
+
+    /* ── SECTIONS / CARDS ── */
+    .section-wrap {
+      background: linear-gradient(160deg, #1746a0 0%, #0d2466 100%);
+      min-height: calc(100vh - 57px);
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: var(--light-blue);
+      border-radius: 16px;
+      padding: 30px 28px;
+      max-width: 780px;
+      margin: 0 auto 32px;
+    }
+
+    .card h2 {
+      color: var(--text-dark);
+      font-size: 1.55rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .card .sub {
+      color: var(--text-sub);
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    /* MiniMEE assistant row */
+    .chat-row {
+      background: #aecdff;
+      border-radius: 10px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid rgba(13,45,110,.35);
+      max-width: 760px;
+    }
+    /* Home robot avatar (bigger) */
+    .chat-avatar {
+      width: 120px;     /* was 74px */
+      height: 120px;    /* was 74px */
+      border-radius: 50%;
+      border: 3px solid var(--white);
+      background: var(--white);
+      overflow: hidden;
+      flex-shrink: 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    @media (max-width: 480px){
+      .chat-avatar { width: 96px; height: 96px; }
+    }
+
+    .chat-avatar img { width: 100%; height: 100%; object-fit: contain; }
+    .chat-name { font-weight: 800; color: var(--text-sub); font-size: 1.05rem; }
+
+    /* Option rows (blue boxes) */
+    .option-row {
+      background: #aecdff;
+      border-radius: 10px;
+      padding: 22px 22px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+      border: 1px solid rgba(13,45,110,.35);
+    }
+
+    .option-icon {
+      width: 52px;
+      height: 52px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+    }
+    .option-icon svg { width: 40px; height: 40px; color: var(--navy); }
+
+    .option-title { font-weight: 900; color: var(--text-dark); font-size: 1.05rem; }
+    .option-sub { font-size: 0.95rem; color: var(--text-sub); margin-top: 6px; }
+
+    /* Buttons (big navy pills) */
+    .btn {
+      display: block;
+      width: 100%;
+      background: var(--btn-bg);
+      color: var(--white);
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 18px 16px;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      text-align: center;
+      margin: 14px 0 22px;
+      transition: background .2s, transform .1s;
+      text-decoration: none;
+    }
+    .btn:hover { background: #1a3a8a; transform: translateY(-1px); }
+
+    .btn.secondary { background: #1a4dbf; }
+    .btn.secondary:hover { background: #1842a1; }
+
+    /* Centered images */
+    .center-img { display:flex; justify-content:center; margin-top: 14px; }
+    .center-img img { max-width: 280px; width: 100%; height: auto; border-radius: 8px; }
+
+    /* Workspace video */
+    .video-wrap {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid #aac4e8;
+      background: #000;
+      margin-top: 16px;
+    }
+    .video-wrap video { width: 100%; display:block; }
+
+    /* About text */
+    .about-text { color: var(--text-dark); line-height: 1.7; font-size: 1rem; }
+    .about-text h3 { font-size: 1.1rem; font-weight: 900; margin: 16px 0 6px; color: var(--navy); }
+  </style>
 </head>
+
 <body>
+  <nav id="main-nav">
+    <a href="#" class="active" data-page="home">Home</a>
+    <a href="#" data-page="about">About SERC</a>
+    <a href="#" data-page="work">Work with SERC</a>
+    <a href="#" data-page="contact">Contact</a>
+    <a href="#" data-page="hardware">MiniMEE Hardware</a>
+    <a href="#" data-page="software">MiniMEE Software</a>
+    <a href="#" data-page="workspace">PCB Workspace Access</a>
+    <a href="#" data-page="extensions">SpaceMiniMEE Software Extensions</a>
 
-<nav id="main-nav">
-  <a href="#" class="active" data-page="home">Home</a>
-  <a href="#" data-page="about">About SERC</a>
-  <a href="#" data-page="work">Work with SERC</a>
-  <a href="#" data-page="contact">Contact</a>
-  <a href="#" data-page="hardware">MiniMEE Hardware</a>
-  <a href="#" data-page="software">MiniMEE Software</a>
-  <a href="#" data-page="workspace">PCB Workspace Access</a>
-  <a href="#" data-page="extensions">SpaceMiniMEE Software Extensions</a>
-  <img class="nav-logo" src="assets/serc-robot.png" alt="MiniMEE Robot" data-robot-png="true" />
-</nav>
+  </nav>
 
-<!-- HOME -->
-<div class="page active" id="page-home">
-  <div class="hero">
-    <div class="hero-logo-box">
-      <img src="assets/serc-logo.png" alt="SERC Logo" />
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-logo-box">
+        <img src="assets/serc-logo.png" alt="SERC Logo" />
+      </div>
+      <h1>PCB Workspace</h1>
+      <p>Space Engineered Robotics Creations</p>
     </div>
-    <h1>PCB Workspace</h1>
-    <p>Space Engineered Robotics Creations</p>
-  </div>
-  <div class="section-wrap" style="padding-top: 0;">
-    <div class="card" style="margin-top: -10px;">
-      <h2 style="text-align:center;">MiniMEE by SERC</h2>
-      <p class="sub" style="text-align:center;">Your Electrical Engineer and Friend!</p>
-      <div class="chat-row">
-        <div class="chat-avatar">
-          <img src="assets/serc-robot.png" alt="MiniMEE Assistant" data-robot-png="true" />
+
+    <div class="section-wrap" style="padding-top: 0;">
+      <div class="card" style="margin-top: -10px;">
+        <h2 style="text-align:center;">MiniMEE by SERC</h2>
+        <p class="sub" style="text-align:center;">Your Electrical Engineer and Friend!</p>
+
+        <div class="chat-row">
+          <div class="chat-avatar">
+            <img src="assets/serc-robot.png" alt="MiniMEE Assistant" data-robot-png="true" />
+          </div>
+          <span class="chat-name">MiniMEE Assistant</span>
         </div>
-        <span class="chat-name">MiniMEE Assistant</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ABOUT -->
-<div class="page" id="page-about">
-  <div class="section-wrap">
-    <div class="card">
-      <h2>About SERC</h2>
-      <p class="sub">Space Engineered Robotics Creations</p>
-      <div class="about-text">
-        <p>SERC (Space Engineered Robotics Creations) is dedicated to building innovative PCB-based robotics tools for education and space engineering applications.</p>
-        <h3>Our Mission</h3>
-        <p>We create accessible hardware and software solutions that empower students, engineers, and space enthusiasts to learn, build, and innovate with electronics and PCB design.</p>
-        <h3>What We Build</h3>
-        <p>From educational MiniMEE kits for beginners to advanced SpaceMiniMEE platforms for CubeSats, Mars Rovers, Rockets, and more — SERC provides the tools you need for your mission.</p>
-      </div>
-      <div class="center-img">
-        <img src="assets/serc-origin.png" alt="SERC origin" />
       </div>
     </div>
   </div>
-</div>
 
-<!-- WORK WITH SERC -->
-<div class="page" id="page-work">
-  <div class="section-wrap">
-    <div class="card">
-      <h2>Want to be part of this journey?</h2>
-      <p class="sub">Because an extra gripper is never a no!</p>
-      <a href="https://forms.gle/yN7hGjSBRXRQAutH6" class="btn" target="_blank" rel="noopener">
-        Become a Team Member
-      </a>
-      <div class="center-img">
-        <img src="assets/hiring.png" alt="We are hiring" />
+  <!-- ABOUT -->
+  <div class="page" id="page-about">
+    <div class="section-wrap">
+      <div class="card">
+        <h2>About SERC</h2>
+        <p class="sub">Space Engineered Robotics Creations</p>
+
+        <div class="about-text">
+          <p>SERC (Space Engineered Robotics Creations) is dedicated to building innovative PCB-based robotics tools for education and space engineering applications.</p>
+
+          <h3>Our Mission</h3>
+          <p>We create accessible hardware and software solutions that empower students, engineers, and space enthusiasts to learn, build, and innovate with electronics and PCB design.</p>
+
+          <h3>What We Build</h3>
+          <p>From educational MiniMEE kits for beginners to advanced SpaceMiniMEE platforms for CubeSats, Mars Rovers, Rockets, and more — SERC provides the tools you need for your mission.</p>
+        </div>
+
+        <div class="center-img">
+          <img src="assets/serc-origin.png" alt="SERC origin" />
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- CONTACT -->
-<div class="page" id="page-contact">
-  <div class="section-wrap">
-    <div class="card">
-      <h2>Signal Us</h2>
-      <p class="sub">Need an Extra (Robotic) Hand?</p>
-      <a href="mailto:spaceroboticscreations@outlook.com" class="btn">Email</a>
-      <div class="center-img">
-        <img src="assets/questions.png" alt="Contact us for questions" />
+  <!-- WORK WITH SERC -->
+  <div class="page" id="page-work">
+    <div class="section-wrap">
+      <div class="card">
+        <h2>Want to be part of this journey?</h2>
+        <p class="sub">Because an extra gripper is never a no!</p>
+
+        <a href="https://forms.gle/yN7hGjSBRXRQAutH6" class="btn" target="_blank" rel="noopener">
+          Become a Team Member
+        </a>
+
+        <div class="center-img">
+          <img src="assets/hiring.png" alt="We are hiring" />
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- HARDWARE -->
-<div class="page" id="page-hardware">
-  <div class="section-wrap">
-    <div class="card">
-      <h2>MiniMEE Hardware</h2>
-      <p class="sub">Build your own Electrical Engineer Assistant!</p>
-      <div class="option-row">
-        <div class="option-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="8" r="4"/><path d="M8 8h-.5a3.5 3.5 0 000 7h9a3.5 3.5 0 000-7H16"/>
-            <path d="M10 19v-4M14 19v-4"/>
-          </svg>
-        </div>
-        <div>
-          <div class="option-title">Educational MiniMEE Hardware</div>
-          <div class="option-sub">Recommended for EE Basics</div>
-        </div>
-      </div>
-      <a href="https://www.paypal.com/ncp/payment/FK68C5WTTL96Q" class="btn" target="_blank" rel="noopener">
-        Get the Educational MiniMEE Hardware
-      </a>
-      <div class="option-row" style="margin-top:6px;">
-        <div class="option-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L8 7H4l2 4-2 4h4l4 5 4-5h4l-2-4 2-4h-4z"/>
-          </svg>
-        </div>
-        <div>
-          <div class="option-title">Space MiniMEE Hardware</div>
-          <div class="option-sub">For Space-related projects</div>
-        </div>
-      </div>
-      <a href="https://www.paypal.com/ncp/payment/TPN3HAVE49FBQ" class="btn" target="_blank" rel="noopener">
-        Get the Space MiniMEE Hardware
-      </a>
-    </div>
-  </div>
-</div>
+  <!-- CONTACT -->
+  <div class="page" id="page-contact">
+    <div class="section-wrap">
+      <div class="card">
+        <h2>Signal Us</h2>
+        <p class="sub">Need an Extra (Robotic) Hand?</p>
 
-<!-- SOFTWARE -->
-<div class="page" id="page-software">
-  <div class="section-wrap">
-    <div class="card">
-      <h2>MiniMEE Software</h2>
-      <p class="sub">Choose your mission software path.</p>
-      <div class="option-row" style="flex-direction:column; align-items:center; text-align:center;">
-        <div class="option-icon" style="margin-bottom:10px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-            <path d="M6 12v5c0 1.66 2.686 3 6 3s6-1.34 6-3v-5"/>
-          </svg>
-        </div>
-        <div class="option-title">Educational MiniMEE Software</div>
-        <div class="option-sub">Curriculum-aligned control tools for teaching PCB robotics fundamentals</div>
-      </div>
-      <a href="https://www.paypal.com/ncp/payment/CBD88P2LKUHB8" class="btn" target="_blank" rel="noopener">
-        Get the Educational MiniMEE Software
-      </a>
-      <div class="option-row" style="flex-direction:column; align-items:center; text-align:center;">
-        <div class="option-icon" style="margin-bottom:10px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2c0 0-4 4-4 10s4 10 4 10 4-4 4-10S12 2 12 2z"/>
-            <path d="M2 12h20"/>
-            <path d="M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/>
-          </svg>
-        </div>
-        <div class="option-title">Space MiniMEE Core Software</div>
-        <div class="option-sub">Mission-style advanced tools for Space Projects</div>
-      </div>
-      <a href="https://www.paypal.com/ncp/payment/J4FE96SXNKFVL" class="btn" target="_blank" rel="noopener">
-        Get the Space MiniMEE Core Software
-      </a>
-      <a href="#" class="btn secondary" data-page="extensions">View Extensions</a>
-    </div>
-  </div>
-</div>
+        <a href="mailto:spaceroboticscreations@outlook.com" class="btn">Email</a>
 
-<!-- ============================================================
-     PCB WORKSPACE  —  UPDATED LINK
-     Old: https://pcbworkspace-serc.github.io/  (old/different repo)
-     New: https://pcbworkspace-serc.github.io/  (pcbworkspace-serc.github.io repo)
-     ============================================================ -->
-<div class="page" id="page-workspace">
-  <div class="section-wrap">
-    <div class="card">
-      <h2>PCB Workspace Access</h2>
-      <p class="sub">Access your SERC Account here!</p>
-      <!-- ✅ UPDATED LINK: points to the new pcbworkspace-serc.github.io software -->
-      <a href="https://pcbworkspace-serc.github.io/" class="btn" target="_blank" rel="noopener">
-        Open PCB Workspace
-      </a>
-      <div class="video-wrap">
-        <video controls>
-          <source src="assets/video.mp4" type="video/mp4" />
-        </video>
+        <div class="center-img">
+          <img src="assets/questions.png" alt="Contact us for questions" />
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- EXTENSIONS -->
-<div class="page" id="page-extensions">
-  <div class="section-wrap">
-    <div class="card">
-      <h2>SpaceMiniMEE Software Extensions</h2>
-      <p class="sub">Choose the extension you wish to implement in your Space MiniMEE</p>
-      <div class="option-row">
-        <div class="option-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 8a8 8 0 0116 0v6a2 2 0 01-2 2h-3l-3 3-3-3H6a2 2 0 01-2-2V8z"/>
-            <path d="M8 8a4 4 0 018 0"/>
-          </svg>
+  <!-- HARDWARE -->
+  <div class="page" id="page-hardware">
+    <div class="section-wrap">
+      <div class="card">
+        <h2>MiniMEE Hardware</h2>
+        <p class="sub">Build your own Electrical Engineer Assistant!</p>
+
+        <div class="option-row">
+          <div class="option-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4"/><path d="M8 8h-.5a3.5 3.5 0 000 7h9a3.5 3.5 0 000-7H16"/>
+              <path d="M10 19v-4M14 19v-4"/>
+            </svg>
+          </div>
+          <div>
+            <div class="option-title">Educational MiniMEE Hardware</div>
+            <div class="option-sub">Recommended for EE Basics</div>
+          </div>
         </div>
-        <div>
-          <div class="option-title">CubeSats Extension</div>
-          <div class="option-sub">Mission-style tool for CubeSats</div>
+
+        <a href="https://www.paypal.com/ncp/payment/FK68C5WTTL96Q" class="btn" target="_blank" rel="noopener">
+          Get the Educational MiniMEE Hardware
+        </a>
+
+        <div class="option-row" style="margin-top:6px;">
+          <div class="option-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L8 7H4l2 4-2 4h4l4 5 4-5h4l-2-4 2-4h-4z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="option-title">Space MiniMEE Hardware</div>
+            <div class="option-sub">For Space-related projects</div>
+          </div>
         </div>
+
+        <a href="https://www.paypal.com/ncp/payment/TPN3HAVE49FBQ" class="btn" target="_blank" rel="noopener">
+          Get the Space MiniMEE Hardware
+        </a>
       </div>
-      <a href="https://www.paypal.com/ncp/payment/E7SS3Q5ZBPB6A" class="btn" target="_blank" rel="noopener">
-        Get the Space MiniMEE CubeSats Extension
-      </a>
-      <div class="option-row">
-        <div class="option-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="4" y="7" width="16" height="11" rx="2"/>
-            <path d="M7 18v2M17 18v2"/>
-            <path d="M8 11h8"/>
-          </svg>
-        </div>
-        <div>
-          <div class="option-title">Mars Rovers Extension</div>
-          <div class="option-sub">Mission-style tool for Rover-style missions</div>
-        </div>
-      </div>
-      <a href="https://www.paypal.com/ncp/payment/VX6TMVCPJJMGS" class="btn" target="_blank" rel="noopener">
-        Get the Space MiniMEE Mars Rovers Extension
-      </a>
-      <div class="option-row">
-        <div class="option-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2s4 4 4 10v4H8v-4C8 6 12 2 12 2z"/>
-            <path d="M8 16l-2 4M16 16l2 4"/>
-            <circle cx="12" cy="12" r="2"/>
-          </svg>
-        </div>
-        <div>
-          <div class="option-title">Rockets Extension</div>
-          <div class="option-sub">Mission-style tool for Rocketry</div>
-        </div>
-      </div>
-      <a href="https://www.paypal.com/ncp/payment/7EEAHTAKFLRS4" class="btn" target="_blank" rel="noopener">
-        Get the Space MiniMEE Rockets Extension
-      </a>
-      <div class="option-row">
-        <div class="option-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 17l1.5-6h15L21 17"/>
-            <path d="M3 17c0 2 18 2 18 0"/>
-            <path d="M12 5v6M9 8l3-3 3 3"/>
-          </svg>
-        </div>
-        <div>
-          <div class="option-title">Mars Boat Extension</div>
-          <div class="option-sub">Mission-style tool for Mars Boat</div>
-        </div>
-      </div>
-      <a href="https://www.paypal.com/ncp/payment/9ESJF4EWVAXNJ" class="btn" target="_blank" rel="noopener">
-        Get the Space MiniMEE Mars Boat Extension
-      </a>
-      <div class="option-row">
-        <div class="option-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="10" width="18" height="11" rx="2"/>
-            <path d="M7 10V7a5 5 0 0110 0v3"/>
-            <path d="M8 15h0M12 15h0M16 15h0" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div>
-          <div class="option-title">Radios Extension</div>
-          <div class="option-sub">Mission-style tool for Radios</div>
-        </div>
-      </div>
-      <a href="https://www.paypal.com/ncp/payment/57MQ7U4H6N22L" class="btn" target="_blank" rel="noopener">
-        Get the Space MiniMEE Radio Extension
-      </a>
     </div>
   </div>
-</div>
 
-<script>
-function removeWhiteBackground(img) {
-  if (!img || !img.complete || img.naturalWidth === 0) return;
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
-  canvas.width = img.naturalWidth;
-  canvas.height = img.naturalHeight;
-  try {
-    ctx.drawImage(img, 0, 0);
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const data = imageData.data;
-    for (let i = 0; i < data.length; i += 4) {
-      const r = data[i];
-      const g = data[i + 1];
-      const b = data[i + 2];
-      if (r > 235 && g > 235 && b > 235) data[i + 3] = 0;
+  <!-- SOFTWARE -->
+  <div class="page" id="page-software">
+    <div class="section-wrap">
+      <div class="card">
+        <h2>MiniMEE Software</h2>
+        <p class="sub">Choose your mission software path.</p>
+
+        <div class="option-row" style="flex-direction:column; align-items:center; text-align:center;">
+          <div class="option-icon" style="margin-bottom:10px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+              <path d="M6 12v5c0 1.66 2.686 3 6 3s6-1.34 6-3v-5"/>
+            </svg>
+          </div>
+          <div class="option-title">Educational MiniMEE Software</div>
+          <div class="option-sub">Curriculum-aligned control tools for teaching PCB robotics fundamentals</div>
+        </div>
+
+        <a href="https://www.paypal.com/ncp/payment/CBD88P2LKUHB8" class="btn" target="_blank" rel="noopener">
+          Get the Educational MiniMEE Software
+        </a>
+
+        <div class="option-row" style="flex-direction:column; align-items:center; text-align:center;">
+          <div class="option-icon" style="margin-bottom:10px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2c0 0-4 4-4 10s4 10 4 10 4-4 4-10S12 2 12 2z"/>
+              <path d="M2 12h20"/>
+              <path d="M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/>
+            </svg>
+          </div>
+          <div class="option-title">Space MiniMEE Core Software</div>
+          <div class="option-sub">Mission-style advanced tools for Space Projects</div>
+        </div>
+
+        <a href="https://www.paypal.com/ncp/payment/J4FE96SXNKFVL" class="btn" target="_blank" rel="noopener">
+          Get the Space MiniMEE Core Software
+        </a>
+
+        <a href="#" class="btn secondary" data-page="extensions">View Extensions</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div class="page" id="page-workspace">
+    <div class="section-wrap">
+      <div class="card">
+        <h2>PCB Workspace Access</h2>
+        <p class="sub">Access your SERC Account here!</p>
+
+        <a href="https://pcbworkspace-serc.github.io/" class="btn" target="_blank" rel="noopener">
+          Open PCB Workspace
+        </a>
+
+        <div class="video-wrap">
+          <video controls>
+            <source src="assets/video.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTENSIONS -->
+  <div class="page" id="page-extensions">
+    <div class="section-wrap">
+      <div class="card">
+        <h2>SpaceMiniMEE Software Extensions</h2>
+        <p class="sub">Choose the extension you wish to implement in your Space MiniMEE</p>
+
+        <div class="option-row">
+          <div class="option-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 8a8 8 0 0116 0v6a2 2 0 01-2 2h-3l-3 3-3-3H6a2 2 0 01-2-2V8z"/>
+              <path d="M8 8a4 4 0 018 0"/>
+            </svg>
+          </div>
+          <div>
+            <div class="option-title">CubeSats Extension</div>
+            <div class="option-sub">Mission-style tool for CubeSats</div>
+          </div>
+        </div>
+        <a href="https://www.paypal.com/ncp/payment/E7SS3Q5ZBPB6A" class="btn" target="_blank" rel="noopener">
+          Get the Space MiniMEE CubeSats Extension
+        </a>
+
+        <div class="option-row">
+          <div class="option-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="7" width="16" height="11" rx="2"/>
+              <path d="M7 18v2M17 18v2"/>
+              <path d="M8 11h8"/>
+            </svg>
+          </div>
+          <div>
+            <div class="option-title">Mars Rovers Extension</div>
+            <div class="option-sub">Mission-style tool for Rover-style missions</div>
+          </div>
+        </div>
+        <a href="https://www.paypal.com/ncp/payment/VX6TMVCPJJMGS" class="btn" target="_blank" rel="noopener">
+          Get the Space MiniMEE Mars Rovers Extension
+        </a>
+
+        <div class="option-row">
+          <div class="option-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2s4 4 4 10v4H8v-4C8 6 12 2 12 2z"/>
+              <path d="M8 16l-2 4M16 16l2 4"/>
+              <circle cx="12" cy="12" r="2"/>
+            </svg>
+          </div>
+          <div>
+            <div class="option-title">Rockets Extension</div>
+            <div class="option-sub">Mission-style tool for Rocketry</div>
+          </div>
+        </div>
+        <a href="https://www.paypal.com/ncp/payment/7EEAHTAKFLRS4" class="btn" target="_blank" rel="noopener">
+          Get the Space MiniMEE Rockets Extension
+        </a>
+
+        <div class="option-row">
+          <div class="option-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 17l1.5-6h15L21 17"/>
+              <path d="M3 17c0 2 18 2 18 0"/>
+              <path d="M12 5v6M9 8l3-3 3 3"/>
+            </svg>
+          </div>
+          <div>
+            <div class="option-title">Mars Boat Extension</div>
+            <div class="option-sub">Mission-style tool for Mars Boat</div>
+          </div>
+        </div>
+        <a href="https://www.paypal.com/ncp/payment/9ESJF4EWVAXNJ" class="btn" target="_blank" rel="noopener">
+          Get the Space MiniMEE Mars Boat Extension
+        </a>
+
+        <div class="option-row">
+          <div class="option-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="10" width="18" height="11" rx="2"/>
+              <path d="M7 10V7a5 5 0 0110 0v3"/>
+              <path d="M8 15h0M12 15h0M16 15h0" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="option-title">Radios Extension</div>
+            <div class="option-sub">Mission-style tool for Radios</div>
+          </div>
+        </div>
+        <a href="https://www.paypal.com/ncp/payment/57MQ7U4H6N22L" class="btn" target="_blank" rel="noopener">
+          Get the Space MiniMEE Radio Extension
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function removeWhiteBackground(img) {
+      if (!img || !img.complete || img.naturalWidth === 0) return;
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+
+      try {
+        ctx.drawImage(img, 0, 0);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+          if (r > 235 && g > 235 && b > 235) data[i + 3] = 0;
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+        img.src = canvas.toDataURL('image/png');
+      } catch (error) {}
     }
-    ctx.putImageData(imageData, 0, 0);
-    img.src = canvas.toDataURL('image/png');
-  } catch (error) {}
-}
 
-function initRobotPngTransparency() {
-  document.querySelectorAll('img[data-robot-png="true"]').forEach(img => {
-    const apply = () => removeWhiteBackground(img);
-    if (img.complete) apply();
-    else img.addEventListener('load', apply, { once: true });
-  });
-}
-initRobotPngTransparency();
-
-function navigate(pageKey) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const target = document.getElementById('page-' + pageKey);
-  if (target) target.classList.add('active');
-  document.querySelectorAll('nav a').forEach(a => {
-    a.classList.remove('active');
-    if (a.dataset.page === pageKey) a.classList.add('active');
-  });
-  window.scrollTo(0, 0);
-}
-
-document.querySelectorAll('nav a, a[data-page]').forEach(a => {
-  a.addEventListener('click', e => {
-    if (a.dataset.page) {
-      e.preventDefault();
-      navigate(a.dataset.page);
+    function initRobotPngTransparency() {
+      document.querySelectorAll('img[data-robot-png="true"]').forEach(img => {
+        const apply = () => removeWhiteBackground(img);
+        if (img.complete) apply();
+        else img.addEventListener('load', apply, { once: true });
+      });
     }
-  });
-});
-</script>
+    initRobotPngTransparency();
+
+    function navigate(pageKey) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const target = document.getElementById('page-' + pageKey);
+      if (target) target.classList.add('active');
+
+      document.querySelectorAll('nav a').forEach(a => {
+        a.classList.remove('active');
+        if (a.dataset.page === pageKey) a.classList.add('active');
+      });
+
+      window.scrollTo(0, 0);
+    }
+
+    document.querySelectorAll('nav a, a[data-page]').forEach(a => {
+      a.addEventListener('click', e => {
+        if (a.dataset.page) {
+          e.preventDefault();
+          navigate(a.dataset.page);
+        }
+      });
+    });
+  </script>
 </body>
 </html>
