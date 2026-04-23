@@ -235,6 +235,13 @@
     /* About text */
     .about-text { color: var(--text-dark); line-height: 1.7; font-size: 1rem; }
     .about-text h3 { font-size: 1.1rem; font-weight: 900; margin: 16px 0 6px; color: var(--navy); }
+    .partner-note {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      line-height: 1.55;
+      margin: 2px 0 18px;
+      padding: 0 6px;
+    }
   </style>
 </head>
 
@@ -248,6 +255,7 @@
     <a href="#" data-page="software">MiniMEE Software</a>
     <a href="#" data-page="workspace">PCB Workspace Access</a>
     <a href="#" data-page="extensions">SpaceMiniMEE Software Extensions</a>
+    <a href="#" data-page="partners">Partners</a>
 
   </nav>
 
@@ -533,6 +541,48 @@
       </div>
     </div>
   </div>
+
+   <!-- ⬇️ PASTE THE NEW PARTNERS PAGE HERE ⬇️ -->
+  <div class="page" id="page-partners">
+    <div class="section-wrap">
+      <div class="card">
+        <h2>Our Partners</h2>
+        <p class="sub">The companies helping SERC reach for the stars.</p>
+
+        <div class="option-row">
+          <div class="option-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="7" width="12" height="10" rx="1"/>
+              <path d="M8 7V5M16 7V5"/>
+              <path d="M8 19v-2M16 19v-2"/>
+              <path d="M12 7v-4"/>
+              <circle cx="12" cy="12" r="2"/>
+              <path d="M6 10h-2M6 14h-2M20 10h-2M20 14h-2"/>
+            </svg>
+          </div>
+          <div>
+            <div class="option-title">StepperOnline</div>
+            <div class="option-sub">Stepper motors, servos, drivers &amp; motion-control components</div>
+          </div>
+        </div>
+
+        <p class="partner-note">
+          StepperOnline supplies precision motion-control hardware — stepper motors,
+          servo motors, drivers, and power supplies trusted by engineers worldwide.
+        </p>
+
+        <a href="https://www.omc-stepperonline.com" class="btn" target="_blank" rel="noopener">
+          Visit StepperOnline
+        </a>
+
+        <p class="sub" style="text-align:center; margin-top:10px;">
+          Interested in partnering with SERC?
+          <a href="mailto:spaceroboticscreations@outlook.com" style="color:var(--navy); font-weight:800;">Signal us</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- ⬆️ END OF NEW PARTNERS PAGE ⬆️ -->
 
   <script>
     function removeWhiteBackground(img) {
