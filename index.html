@@ -28,6 +28,39 @@
       min-height: 100vh;
     }
 
+    /* ── NEW SITE BANNER (centered) ── */
+    .newsite-banner {
+      position: fixed;
+      top: 50%; left: 0; right: 0;
+      transform: translateY(-50%);
+      z-index: 9999;
+      display: block;
+      background: linear-gradient(90deg, #38c6ff, #0aa2e0);
+      color: #041224;
+      text-align: center;
+      text-decoration: none;
+      padding: 26px 18px;
+      font-weight: 900;
+      font-size: 1.35rem;
+      letter-spacing: .01em;
+      box-shadow: 0 10px 40px rgba(0,0,0,.45);
+      transition: background .2s;
+    }
+    .newsite-banner:hover { background: linear-gradient(90deg, #0aa2e0, #38c6ff); }
+    .newsite-banner u { text-underline-offset: 4px; }
+    .newsite-banner .sub {
+      display: block;
+      font-size: .82rem;
+      font-weight: 700;
+      opacity: .8;
+      margin-top: 5px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    @media (max-width: 600px){
+      .newsite-banner { font-size: 1.05rem; padding: 20px 14px; }
+    }
+
     /* ── NAV ── */
     nav {
       background: var(--white);
@@ -262,6 +295,11 @@
 </head>
 
 <body>
+  <a class="newsite-banner" href="https://pcbworkspace-serc.github.io/serc-site/">
+    Visit our new official website <u>here</u> &rarr;
+    <span class="sub">This page has moved</span>
+  </a>
+
   <nav id="main-nav">
     <a href="#" class="active" data-page="home">Home</a>
     <a href="#" data-page="about">About SERC</a>
