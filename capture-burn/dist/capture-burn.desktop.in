@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Capture Burn
+Comment=Cross the asteroid belt and brake into orbit
+Exec=@CMAKE_INSTALL_FULL_BINDIR@/capture-burn
+Icon=capture-burn
+Terminal=false
+Categories=Game;ArcadeGame;
+Keywords=space;asteroids;orbit;game;
