@@ -1,0 +1,86 @@
+name: capture-burn
+
+# Only runs when the game changes; the website is unaffected.
+on:
+  push:
+    paths: ["capture-burn/**", ".github/workflows/capture-burn.yml"]
+  pull_request:
+    paths: ["capture-burn/**", ".github/workflows/capture-burn.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  x86_64:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: capture-burn
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dependencies
+        run: sudo apt-get update && sudo apt-get install -y libsdl2-dev valgrind
+      - name: Build (game + tools)
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j
+      - name: Simulation core makes no libm calls (determinism)
+        run: |
+          if nm -u build/libcbcore.a | grep -E ' (sin|cos|tan|atan2?|exp|log|pow|cbrt|fma)f?$'; then
+            echo "libm call found in the deterministic core"; exit 1
+          fi
+      - name: Physics & determinism tests
+        run: ./build/cb-test
+      - name: Golden replays
+        run: ./build/cb-replay verify golden
+      - name: Sanitizers (ASan + UBSan)
+        run: |
+          cmake -S . -B asan -DCMAKE_BUILD_TYPE=Debug -DCB_SANITIZE=ON -DCB_BUILD_GAME=OFF
+          cmake --build asan -j
+          ./asan/cb-test
+          ./asan/cb-replay verify golden/seed001.cbrt golden/seed002.cbrt
+      - name: Valgrind
+        run: valgrind --error-exitcode=1 --leak-check=full -q ./build/cb-replay verify golden/seed003.cbrt
+      - name: Design criteria - no dominant strategy (autopilot ablations)
+        run: ./build/cb-bench --seeds 120 --jobs 4
+      - name: Every seed winnable (solver portfolio)
+        run: ./build/cb-bench --winnable --seeds 120 --jobs 4
+
+  arm:
+    # Cross-compile for the Pi's two ABIs and run under qemu-user: the
+    # golden replays recorded on x86_64 must reproduce bit-for-bit.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: aarch64 (64-bit Pi OS)
+            cc: aarch64-linux-gnu-gcc
+            pkg: gcc-aarch64-linux-gnu
+            proc: aarch64
+            qemu: qemu-aarch64
+            sysroot: /usr/aarch64-linux-gnu
+          - name: armv7 hard-float (32-bit Pi OS)
+            cc: arm-linux-gnueabihf-gcc
+            pkg: gcc-arm-linux-gnueabihf
+            proc: armv7l
+            qemu: qemu-arm
+            sysroot: /usr/arm-linux-gnueabihf
+    name: ${{ matrix.name }}
+    defaults:
+      run:
+        working-directory: capture-burn
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cross toolchain + qemu
+        run: sudo apt-get update && sudo apt-get install -y ${{ matrix.pkg }} qemu-user
+      - name: Build headless core + tools
+        run: |
+          cmake -S . -B build -DCB_BUILD_GAME=OFF -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_SYSTEM_NAME=Linux -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.proc }} \
+            -DCMAKE_C_COMPILER=${{ matrix.cc }}
+          cmake --build build -j
+      - name: Golden replays (bit-identical across architectures)
+        run: QEMU_LD_PREFIX=${{ matrix.sysroot }} ${{ matrix.qemu }} build/cb-replay verify golden
+      - name: Physics & determinism tests
+        run: QEMU_LD_PREFIX=${{ matrix.sysroot }} ${{ matrix.qemu }} build/cb-test
